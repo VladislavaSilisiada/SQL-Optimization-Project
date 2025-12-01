@@ -69,11 +69,17 @@ JOIN `DA.account` a ON ed.id_account = a.id
 WHERE a.is_unsubscribed = 0
 GROUP BY sp.operating_system;
 
-**Performance Metrics**
+### 3. Performance Analysis and Metrics (The Proof)
 
-| Metric | Before Optimization (S05) | After Optimization (S07) | Improvement |
+The optimization resulted in significant, quantifiable gains verified by the BigQuery execution plan metrics.
+
+#### Performance Metrics Summary
+
+The analysis focused on the Slot Time Consumed, which directly measures the CPU resources used by the query. The optimization led to a major decrease in resource consumption.
+
+| Metric | Before Optimization | After Optimization | Improvement |
 | :--- | :--- | :--- | :--- |
-| **Key Stage Slot Time** | 10 seconds | 2 seconds | 80% Reduction |
-| **Total Query Slot Time** | 14 seconds | 5 seconds | 80% Reduction |
-| **Key Bottleneck** | 14 seconds | 5 seconds | 64% Reduction |
+| **Key Stage Slot Time** | **10 seconds** | **2 seconds** | 80% Reduction |
+| **Total Query Slot Time** | 14 seconds | **5 seconds** | **64% Reduction** |
 | **Query Elapsed Time** | 4 seconds | 3 seconds | 1 second faster |
+| **Primary Bottleneck** | Nested Subqueries/Derived Tables | Eliminated | Refactored using CTE |

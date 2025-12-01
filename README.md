@@ -10,13 +10,13 @@ This project details a systematic approach to identifying and resolving performa
 * **Indexing Strategy:** Understanding and applying appropriate indexing (e.g., clustered vs. non-clustered, composite indexes).
 * **Data Modeling Awareness:** Recognizing how query structure interacts with table schema and data distribution.
   
-##1. The Optimization 
+### 1. The Optimization 
 **The Problem (Before Optimization)**
 The original query was designed to calculate email engagement rates (open rate, click rate, etc.) grouped by the user's operating system. However, the structure suffered from low readability and poor performance due to complex, redundant subqueries within the JOIN operations.
 
 The key bottleneck was the use of unnecessary SELECT * FROM table wrapped in parentheses during the LEFT JOIN operations, which complicated the execution plan and likely forced the database to create large, inefficient derived tables. This increases I/O cost and overall execution time.
 -- BEFORE OPTIMIZATION (Inefficient Query Snippet)
--- Full code available in: 
+-- Full code available in [`sql/original_query.sql`](./sql/original_query.sql).
 SELECT
     account_session.operating_system,
     COUNT(DISTINCT id_message_open) / COUNT(DISTINCT id_message_sent) * 100 AS open_rate,
@@ -48,7 +48,7 @@ The technique used was isolating the email event joins (email_sent, email_open, 
 
 This refactoring shifts the heavy lifting into a defined block, resulting in a cleaner execution plan with fewer temporary table writes and a significant reduction in overall execution time.
 -- AFTER OPTIMIZATION 
--- Full code available in:
+-- Full code available in [`sql/optimized_query.sql`](./sql/optimized_query.sql)
 WITH email_data AS (
     SELECT
         es.id_account,

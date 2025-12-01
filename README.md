@@ -11,7 +11,9 @@ This project details a systematic approach to identifying and resolving performa
 * **Data Modeling Awareness:** Recognizing how query structure interacts with table schema and data distribution.
   
 ### 1. The Optimization 
-**The Problem (Before Optimization)**
+
+###The Problem (Before Optimization)
+
 The original query was designed to calculate email engagement rates (open rate, click rate, etc.) grouped by the user's operating system. However, the structure suffered from low readability and poor performance due to complex, redundant subqueries within the JOIN operations.
 
 The key bottleneck was the use of unnecessary SELECT * FROM table wrapped in parentheses during the LEFT JOIN operations, which complicated the execution plan and likely forced the database to create large, inefficient derived tables. This increases I/O cost and overall execution time.
@@ -41,7 +43,8 @@ WHERE
 GROUP BY
     account_session.operating_system;
 
-**The Solution (After Optimization)**
+###The Solution (After Optimization)
+
 The query was refactored using a Common Table Expression (CTE) to simplify the join logic and modularize the code.
 
 The technique used was isolating the email event joins (email_sent, email_open, email_visit) into a single, clean CTE named email_data. This allowed for direct, simplified LEFT JOIN operations, making the query easier for the database optimizer to process.
@@ -69,7 +72,7 @@ JOIN `DA.account` a ON ed.id_account = a.id
 WHERE a.is_unsubscribed = 0
 GROUP BY sp.operating_system;
 
-### 3. Performance Analysis and Metrics (The Proof)
+### 3. Performance Analysis and Metrics
 
 The optimization resulted in significant, quantifiable gains verified by the BigQuery execution plan metrics.
 

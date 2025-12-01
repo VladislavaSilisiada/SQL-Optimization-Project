@@ -12,7 +12,7 @@ This project details a systematic approach to identifying and resolving performa
   
 ### 1. The Optimization 
 
-###The Problem (Before Optimization)
+#### The Problem (Before Optimization)
 
 The original query was designed to calculate email engagement rates (open rate, click rate, etc.) grouped by the user's operating system. However, the structure suffered from low readability and poor performance due to complex, redundant subqueries within the JOIN operations.
 
@@ -43,7 +43,7 @@ WHERE
 GROUP BY
     account_session.operating_system;
 
-###The Solution (After Optimization)
+#### The Solution (After Optimization)
 
 The query was refactored using a Common Table Expression (CTE) to simplify the join logic and modularize the code.
 
